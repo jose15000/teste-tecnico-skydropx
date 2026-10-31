@@ -48,6 +48,11 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+.agents/
+
+# Context Atlas
+context/
+context/.codeatlas-cache.json
 
 # Runtime data
 pids

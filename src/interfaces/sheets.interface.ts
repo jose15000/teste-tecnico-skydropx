@@ -2,6 +2,10 @@ export type CellValue = string | number | boolean | null;
 
 export type SheetRow = CellValue[];
 
+/**
+ * Aba "Products" (A1:I)
+ * Colunas: SKU | Producto | Largo (cm) | Ancho (cm) | Alto (cm) | Peso (kg) | Cantidad | Frágil | Valor (MXN)
+ */
 export interface ProductSheetRow {
   sku: string;
   name: string;
@@ -10,57 +14,62 @@ export interface ProductSheetRow {
   heightCm: number;
   weightKg: number;
   quantity: number;
+  fragile: boolean;
+  valueMxn: number;
 }
 
+/**
+ * Aba "Parameters" (A1:B)
+ * Colunas: Parámetro | Valor
+ */
 export interface ParameterSheetRow {
   key: string;
-  value: string | number;
-  description?: string;
+  value: string;
 }
 
+/**
+ * Aba "Boxes" (A1:J)
+ * Colunas: Estrategia | Caja ID | Largo ext. (cm) | Ancho ext. (cm) | Alto ext. (cm) | Peso real (kg) | Peso volumétrico (kg) | Peso facturable (kg) | Ocupación (%) | SKUs contenidos
+ */
 export interface BoxSheetRow {
   strategy: string;
   boxId: string;
-  itemsSummary: string;
-  unitsCount: number;
-  internalLengthCm: number;
-  internalWidthCm: number;
-  internalHeightCm: number;
   externalLengthCm: number;
   externalWidthCm: number;
   externalHeightCm: number;
-  itemsWeightKg: number;
-  tareWeightKg: number;
   actualWeightKg: number;
   volumetricWeightKg: number;
   billableWeightKg: number;
   occupancyPercent: number;
+  containedSkus: string;
 }
 
+/**
+ * Aba "Quotations" (A1:I)
+ * Colunas: Estrategia | Caja ID | Paquetería | Servicio | Precio total (MXN) | Días estimados | Rate ID | Estado | Error
+ */
 export interface QuotationSheetRow {
   strategy: string;
   boxId: string;
-  quotationId: string;
-  rateId: string;
   carrier: string;
   service: string;
-  totalPrice: number;
-  currency: string;
-  deliveryDays: number;
-  balanceScore: number;
-  recommendationType?: 'CHEAPEST' | 'FASTEST' | 'BEST_BALANCE' | 'NONE';
+  totalPriceMxn: number;
+  estimatedDays: number;
+  rateId: string;
+  status: string;
+  error?: string;
 }
 
+/**
+ * Aba "Labels" (A1:G)
+ * Colunas: Caja ID | Paquetería | Servicio | Precio (MXN) | Número de guía | Archivo PDF | Creada en
+ */
 export interface LabelSheetRow {
-  strategy: string;
   boxId: string;
-  shipmentId: string;
-  rateId: string;
   carrier: string;
   service: string;
+  priceMxn: number;
   trackingNumber: string;
-  labelUrl: string;
-  localPdfPath: string;
-  status: 'created' | 'skipped_existing' | 'failed';
+  pdfFile: string;
   createdAt: string;
 }
