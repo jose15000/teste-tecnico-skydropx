@@ -1,0 +1,246 @@
+{
+  "nodes": [
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.e2e.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.e2e.ts",
+        "name": "vitest.config.e2e.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.ts",
+        "name": "vitest.config.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+        "name": "app.controller.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController",
+      "type": "class",
+      "data": {
+        "name": "AppController"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController.getHello",
+      "type": "method",
+      "data": {
+        "name": "AppController.getHello",
+        "className": "AppController",
+        "methodName": "getHello"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+        "name": "app.module.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts#AppModule",
+      "type": "class",
+      "data": {
+        "name": "AppModule"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+        "name": "app.service.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService",
+      "type": "class",
+      "data": {
+        "name": "AppService"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService.getHello",
+      "type": "method",
+      "data": {
+        "name": "AppService.getHello",
+        "className": "AppService",
+        "methodName": "getHello"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts",
+        "name": "main.ts"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts#bootstrap",
+      "type": "function",
+      "data": {
+        "name": "bootstrap"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "type": "file",
+      "data": {
+        "path": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+        "name": "app.e2e-spec.ts"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.e2e.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/vitest/config.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/vitest/config.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController.getHello",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts#AppController.getHello",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService.getHello",
+      "type": "CALLS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/common/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts#AppModule",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/common/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/observe/dist/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts#AppService.getHello",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/common/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts#bootstrap",
+      "type": "DEFINES"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/core/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/testing/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@nestjs/common/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@types/supertest/index.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/node_modules/@types/supertest/types.d.ts",
+      "type": "IMPORTS"
+    },
+    {
+      "from": "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts",
+      "to": "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts",
+      "type": "IMPORTS"
+    }
+  ],
+  "mtimes": {
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.spec.ts": 1793402957892.3716,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.controller.ts": 1793402957892.1882,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.module.ts": 1793402957892.3108,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/app.service.ts": 1793402957892.3318,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/src/main.ts": 1793402957892.3518,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/test/app.e2e-spec.ts": 1793402957892.3716,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.e2e.ts": 1793402957892.1367,
+    "/home/jooj/Documents/projects/teste-tecnico-skydropx/vitest.config.ts": 1793402957892.1882
+  }
+}
