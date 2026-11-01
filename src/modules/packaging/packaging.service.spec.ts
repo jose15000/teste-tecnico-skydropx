@@ -2,7 +2,7 @@ import { Test, type TestingModule } from '@nestjs/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CatalogUnit, PackagingConstraints } from '../../interfaces/catalog.interface.js';
 import type { PackagingResult } from '../../interfaces/packaging.interface.js';
-import { check3DOverlap, getRotations } from './packer-3d.engine.js';
+import { check3DOverlap, getRotations } from '../../utils/packing/index.js';
 import { PackagingRepository } from './packaging.repository.js';
 import { PackagingService } from './packaging.service.js';
 
