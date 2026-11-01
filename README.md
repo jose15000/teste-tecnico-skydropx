@@ -32,7 +32,13 @@ src/
 │   └── shipping.interface.ts
 ├── schemas/                # Declarative Zod schemas (regex-free)
 │   └── catalog.schema.ts
-├── utils/                  # Resilient parsing & normalization helpers
+├── utils/                  # Resilient parsing, normalization & geometric packing helpers
+│   ├── packing/            # 3D Bin-Packing utilities (Extreme-Points, AABB, metrics)
+│   │   ├── geometry.util.ts
+│   │   ├── extreme-points.util.ts
+│   │   ├── metrics.util.ts
+│   │   ├── types.ts
+│   │   └── index.ts
 │   └── sheet-parser.util.ts
 └── modules/                # Vertical Feature Slices
     ├── integrations/       # External infrastructure gateways (Google Sheets, Skydropx)
@@ -40,7 +46,7 @@ src/
     ├── packaging/          # 3D bin-packing heuristics & box persistence
     ├── quotations/         # Carrier rate quoting & price-delivery scoring
     ├── labels/             # Shipment generation, PDF downloading & idempotency
-    └── automation/         # End-to-end orchestrator pipeline
+    └── automation/         # End-to-end orchestrator pipeline & unified API facade
 ```
 
 Each module operates with dedicated responsibilities and explicit dependencies:
@@ -121,6 +127,19 @@ Strict TypeScript interfaces define the structural contracts between layers:
 Spreadsheet data entered by human operators often contains localized conventions, diacritics, and varied formats. The parser utilities normalize inputs prior to validation:
 - **`parseSheetNumber(value)`**: Handles `undefined`, `null`, and whitespace strings gracefully (returning `NaN`); normalizes European and Latin American comma decimal separators (`"4,8"` $\to$ `"4.8"`) before numeric conversion.
 - **`parseSheetBoolean(value)`**: Normalizes strings by stripping Unicode diacritics via `.normalize('NFD').replace(/[\u0300-\u036f]/g, '')`, converting to lowercase, and checking against multilingual truthy representations (`"si"`, `"sí"`, `"sim"`, `"true"`, `"1"`, `"yes"`).
+
+#### Modular 3D Bin-Packing Utilities (`src/utils/packing/`)
+To preserve high cohesion and prevent bloated domain services, all pure mathematical, geometric, and metric computations are isolated into dedicated utilities under `src/utils/packing/`:
+- **`geometry.util.ts`**:
+  - `getRotations(l, w, h)`: Computes all unique orthogonal 3D permutations, deduplicating identical dimension orientations.
+  - `check3DOverlap(posA, dimA, posB, dimB)`: Strict 3D Axis-Aligned Bounding Box (AABB) volumetric intersection predicate ensuring physical feasibility with zero deformation or overlapping solids.
+- **`extreme-points.util.ts`**:
+  - `canPlaceInBox(box, point, rotation, weightKg, constraints)`: Verifies internal side bounds ($60 - 2 = 58\text{ cm}$), box net weight limits ($25 - 0.3 = 24.7\text{ kg}$), and collision checks against already placed units.
+  - `placeItemInBox(box, unit, point, rotation, constraints)`: Inserts units, prunes engulfed candidate points, generates new corner support points with adjacent unit projections, and sorts points for stable bottom-to-top, back-to-front, left-to-right filling ($Z \to Y \to X$).
+- **`metrics.util.ts`**:
+  - `finalizeBox(box, boxIndex, strategy, constraints)`: Computes custom bounding box, tare weight, volumetric weight, billable weight, and internal volume occupancy percentage.
+  - `buildPackagingResult(strategy, boxes)`: Aggregates order-wide packaging summaries and averages.
+- **`types.ts` & `index.ts`**: Clean internal domain types and barrel re-exports.
 
 #### Declarative Zod Validation Without Regular Expressions (`src/schemas/catalog.schema.ts`)
 All schema validations are implemented using **Zod 4** without regular expressions, explicitly eliminating **ReDoS (Regular Expression Denial of Service)** attack vectors:
