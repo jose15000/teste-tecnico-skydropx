@@ -57,7 +57,6 @@ Each module operates with dedicated responsibilities and explicit dependencies:
    - **Components**:
      - `CatalogRepository`: Injects `GoogleSheetsClient` to fetch `Products!A2:I` and `Parameters!A2:B`, converting untyped spreadsheet cells into typed domain models.
      - `CatalogService`: Enforces runtime validation using Zod schemas, dynamically parameterizes packaging constraints against the spreadsheet parameters, isolates invalid rows without failing the pipeline, and expands SKU quantities into discrete unit instances (`CatalogUnit`).
-     - `CatalogController`: Exposes `GET /catalog` returning the validated catalog, packaging parameters, and expanded units.
    - **Exports**: `CatalogService`, `CatalogRepository`.
 
 3. **`src/modules/packaging/` (`PackagingModule`)**
@@ -65,7 +64,6 @@ Each module operates with dedicated responsibilities and explicit dependencies:
    - **Components**:
      - `PackagingRepository`: Injects `GoogleSheetsClient` to persist calculated box records directly to `Boxes!A2:J` (`saveBoxes`), clearing previous outputs and batch-appending new rows.
      - `PackagingService`: Evaluates 3D Extreme-Points bounding-box heuristics, respecting clearance offsets and tare weight limits.
-     - `PackagingController`: Exposes `/packaging` endpoints for calculating and retrieving 3D packaging plans.
    - **Exports**: `PackagingService`, `PackagingRepository`.
 
 4. **`src/modules/quotations/` (`QuotationsModule`)**
@@ -73,7 +71,6 @@ Each module operates with dedicated responsibilities and explicit dependencies:
    - **Components**:
      - `QuotationsRepository`: Persists quoted rates to `Quotations!A1:I`.
      - `QuotationsService`: Orchestrates rate fetching across all packed boxes and applies the weighted Price–Delivery Balance scoring formula.
-     - `QuotationsController`: Exposes `/quotations` endpoints for quoting boxes and retrieving ranked rates.
    - **Exports**: `QuotationsService`, `QuotationsRepository`.
 
 5. **`src/modules/labels/` (`LabelsModule`)**
@@ -81,14 +78,13 @@ Each module operates with dedicated responsibilities and explicit dependencies:
    - **Components**:
      - `LabelsRepository`: Reads and writes label records to `Labels!A1:G`, tracking generated tracking numbers and PDF filenames.
      - `LabelsService`: Generates shipping labels via Skydropx API v1 (`POST /api/v1/shipments`), checks existing local files and sheet rows before creation, and saves generated PDF files to `/labels`.
-     - `LabelsController`: Exposes `/labels` endpoints for label generation and status inspection.
    - **Exports**: `LabelsService`, `LabelsRepository`.
 
 6. **`src/modules/automation/` (`AutomationModule`)**
-   - **Role**: Orchestration and facade layer providing an end-to-end automated pipeline across all modules.
+   - **Role**: Orchestration and facade layer providing an end-to-end automated pipeline across all modules. Exposes the unified API surface.
    - **Components**:
      - `AutomationService`: Coordinates the full sequential workflow: catalog ingestion $\to$ 3D packaging $\to$ quotation retrieval $\to$ sheet synchronization $\to$ label generation.
-     - `AutomationController`: Exposes `/automation` endpoints enabling one-click full workflow runs from the frontend dashboard.
+     - `AutomationController`: Exposes `/automation` endpoints (`POST /automation/run`, `GET /automation/report`) enabling one-click full workflow runs from the frontend dashboard.
 
 ---
 
