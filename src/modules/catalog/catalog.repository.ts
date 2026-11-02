@@ -5,10 +5,7 @@ import type {
   CatalogParameters,
   ShippingAddress,
 } from '../../interfaces/catalog.interface.js';
-import {
-  parseSheetBoolean,
-  parseSheetNumber,
-} from '../../utils/sheet-parser.util.js';
+import { parseSheetBoolean, parseSheetNumber } from '../../utils/sheet-parser.util.js';
 import { GoogleSheetsClient } from '../integrations/google-sheets/google-sheets.client.js';
 
 @Injectable()
@@ -17,7 +14,6 @@ export class CatalogRepository {
 
   async fetchRawProducts(range = 'Products!A2:I'): Promise<CatalogItem[]> {
     const rows = await this.client.getRows(range);
-
     return rows.map((row, index) => ({
       rowNumber: index + 2,
       sku: String(row[0] ?? '').trim(),
@@ -36,7 +32,6 @@ export class CatalogRepository {
     const rows = await this.client.getRows(range);
     const get = (key: string) =>
       rows.find(([k]) => k?.trim().toLowerCase() === key)?.[1]?.trim() ?? '';
-
     return {
       constraints: {
         maxSideCm: parseSheetNumber(get('lado_maximo_cm')),
@@ -51,18 +46,11 @@ export class CatalogRepository {
   }
 
   async fetchCatalogData(): Promise<CatalogData> {
-    const [items, parameters] = await Promise.all([
-      this.fetchRawProducts(),
-      this.fetchParameters(),
-    ]);
-
+    const [items, parameters] = await Promise.all([this.fetchRawProducts(), this.fetchParameters()]);
     return { items, ...parameters };
   }
 
-  private mapAddress(
-    get: (k: string) => string,
-    prefix: 'origen' | 'destino',
-  ): ShippingAddress {
+  private mapAddress(get: (k: string) => string, prefix: 'origen' | 'destino'): ShippingAddress {
     return {
       name: get(`${prefix}_nombre`),
       street1: get(`${prefix}_direccion`),

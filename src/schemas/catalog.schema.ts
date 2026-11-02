@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { PackagingConstraints } from '../interfaces/catalog.interface.js';
 
-export const shippingAddressSchema = z.object({
+export const ShippingAddressSchema = z.object({
   name: z.string().min(1, 'Address name is required'),
   street1: z.string().min(1, 'Street address is required'),
   city: z.string().min(1, 'City is required'),
@@ -19,7 +19,7 @@ export const shippingAddressSchema = z.object({
   email: z.email('Invalid email format'),
 });
 
-export const packagingConstraintsSchema = z
+export const PackagingConstraintsSchema = z
   .object({
     maxSideCm: z.number().positive('lado_maximo_cm must be > 0'),
     maxBoxWeightKg: z.number().positive('peso_maximo_kg must be > 0'),
@@ -32,10 +32,10 @@ export const packagingConstraintsSchema = z
     path: ['boxTareWeightKg'],
   });
 
-export const catalogParametersSchema = z.object({
-  constraints: packagingConstraintsSchema,
-  originAddress: shippingAddressSchema,
-  destinationAddress: shippingAddressSchema,
+export const CatalogParametersSchema = z.object({
+  constraints: PackagingConstraintsSchema,
+  originAddress: ShippingAddressSchema,
+  destinationAddress: ShippingAddressSchema,
 });
 
 export function createCatalogItemSchema(constraints: PackagingConstraints) {

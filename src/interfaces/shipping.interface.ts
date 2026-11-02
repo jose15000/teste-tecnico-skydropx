@@ -1,4 +1,5 @@
 import type { PackagingStrategyName } from './packaging.interface.js';
+import type { QuotationSheetRow } from './sheets.interface.js';
 
 export interface QuotationRate {
   rateId: string;
@@ -35,4 +36,10 @@ export interface LabelRecord {
   status: 'created' | 'skipped_existing' | 'failed';
   createdAt: string;
   errorMessage?: string;
+}
+
+export interface MultiStrategyQuotationResult {
+  minBoxesResults: BoxQuotationResult[];
+  minBillableResults: BoxQuotationResult[];
+  allSheetRows: QuotationSheetRow[];
 }

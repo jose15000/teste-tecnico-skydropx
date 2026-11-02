@@ -25,8 +25,12 @@ export class GoogleSheetsClient implements OnModuleInit {
       return;
     }
 
-    const privateKey = rawPrivateKey.replace(/\\n/g, '\n');
-    this.spreadsheetId = spreadsheetId;
+    let privateKey = rawPrivateKey.trim();
+    if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+      privateKey = privateKey.slice(1, -1);
+    }
+    privateKey = privateKey.replace(/\\n/g, '\n');
+    this.spreadsheetId = spreadsheetId.trim();
 
     const auth = new google.auth.JWT({
       email: clientEmail,
