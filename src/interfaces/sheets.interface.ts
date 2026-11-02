@@ -46,7 +46,7 @@ export interface BoxSheetRow {
 
 /**
  * Aba "Quotations" (A1:I)
- * Colunas: Estrategia | Caja ID | Paquetería | Servicio | Precio total (MXN) | Días estimados | Rate ID | Estado | Error
+ * Colunas: Estrategia | Caja ID | Paquetería | Servicio | Precio total (MXN) | Días estimados | Rate ID | Cotizado en | Estado
  */
 export interface QuotationSheetRow {
   strategy: string;
@@ -56,6 +56,7 @@ export interface QuotationSheetRow {
   totalPriceMxn: number;
   estimatedDays: number;
   rateId: string;
+  quotedAt?: string;
   status: string;
   error?: string;
 }

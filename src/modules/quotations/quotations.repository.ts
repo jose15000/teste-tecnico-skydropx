@@ -18,7 +18,13 @@ export class QuotationsRepository {
     await this.sheetsClient.clearRange(range);
     if (quotations.length === 0) return;
 
-    const rows = quotations.map((q) => [
+    // Filter out rows with price <= 0 unless it represents an isolated box failure record
+    const sanitized = quotations.filter(
+      (q) => q.totalPriceMxn > 0 || q.status === 'failed',
+    );
+    if (sanitized.length === 0) return;
+
+    const rows = sanitized.map((q) => [
       q.strategy,
       q.boxId,
       q.carrier,
@@ -26,8 +32,8 @@ export class QuotationsRepository {
       q.totalPriceMxn,
       q.estimatedDays,
       q.rateId,
-      q.status,
-      q.error ?? '',
+      q.quotedAt || new Date().toISOString(),
+      q.error ? `Error: ${q.error}` : q.status,
     ]);
 
     await this.sheetsClient.appendRows(range, rows);
@@ -48,8 +54,9 @@ export class QuotationsRepository {
       totalPriceMxn: Number.parseFloat(String(row[4] ?? '0')) || 0,
       estimatedDays: Number.parseInt(String(row[5] ?? '0'), 10) || 0,
       rateId: String(row[6] ?? '').trim(),
-      status: String(row[7] ?? '').trim(),
-      error: row[8] ? String(row[8]).trim() : undefined,
+      quotedAt: String(row[7] ?? '').trim(),
+      status: String(row[8] ?? row[7] ?? '').trim(),
+      error: row[8] && String(row[8]).startsWith('Error:') ? String(row[8]).trim() : undefined,
     }));
   }
 }

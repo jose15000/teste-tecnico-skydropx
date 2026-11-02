@@ -103,7 +103,10 @@ export function toSheetRows(
   strategy: string,
   boxId: string,
 ): QuotationSheetRow[] {
-  if (rates.length === 0) {
+  const validRates = rates.filter((r) => r.success && r.totalPrice > 0);
+  const quotedAt = new Date().toISOString();
+
+  if (validRates.length === 0) {
     return [
       {
         strategy,
@@ -113,13 +116,14 @@ export function toSheetRows(
         totalPriceMxn: 0,
         estimatedDays: 0,
         rateId: '',
+        quotedAt,
         status: 'failed',
-        error: 'No rates returned or quotation failed',
+        error: 'No valid rates returned or quotation failed',
       },
     ];
   }
 
-  return rates.map((r) => ({
+  return validRates.map((r) => ({
     strategy,
     boxId,
     carrier: r.carrier,
@@ -127,6 +131,7 @@ export function toSheetRows(
     totalPriceMxn: r.totalPrice,
     estimatedDays: r.deliveryDays,
     rateId: r.rateId,
+    quotedAt,
     status: r.status || (r.success ? 'approved' : 'failed'),
   }));
 }
