@@ -26,12 +26,33 @@ describe('AutomationService', () => {
       }),
     };
 
-    const service = new AutomationService(catalog as never, packaging as never, quotations as never);
+    const packagingRepo = {
+      fetchBoxes: vi.fn().mockResolvedValue([
+        { strategy: 'MIN_BOXES', boxId: 'B1', billableWeightKg: 5, containedSkus: 'SKU-1' },
+      ]),
+    };
+    const quotationsRepo = {
+      fetchQuotations: vi.fn().mockResolvedValue([
+        { strategy: 'MIN_BOXES', boxId: 'B1', carrier: 'FedEx', service: 'Std', totalPriceMxn: 100, estimatedDays: 2 },
+      ]),
+    };
+
+    const service = new AutomationService(
+      catalog as never,
+      packaging as never,
+      quotations as never,
+      packagingRepo as never,
+      quotationsRepo as never,
+    );
     const result = await service.run();
 
     expect(packaging.savePackagingResults).toHaveBeenCalledTimes(1);
     expect(result.totalUnits).toBe(1);
     expect(result.invalidItems).toHaveLength(1);
     expect(result.strategies.map((s) => s.quotedRows)).toEqual([2, 1]);
+
+    const report = await service.getReport();
+    expect(report.strategies).toHaveLength(1);
+    expect(report.recommendation.strategy).toBe('MIN_BOXES');
   });
 });

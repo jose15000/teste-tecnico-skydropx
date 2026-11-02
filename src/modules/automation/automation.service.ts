@@ -1,9 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import type { AutomationRunResult } from '../../interfaces/automation.interface.js';
 import type { PackagingResult } from '../../interfaces/packaging.interface.js';
+import type { AutomationReport } from '../../interfaces/report.interface.js';
 import { CatalogService } from '../catalog/catalog.service.js';
+import { PackagingRepository } from '../packaging/packaging.repository.js';
 import { PackagingService } from '../packaging/packaging.service.js';
+import { QuotationsRepository } from '../quotations/quotations.repository.js';
 import { QuotationsService } from '../quotations/quotations.service.js';
+import { buildAutomationReport } from './report-analyzer.js';
 
 @Injectable()
 export class AutomationService {
@@ -13,6 +17,8 @@ export class AutomationService {
     private readonly catalog: CatalogService,
     private readonly packaging: PackagingService,
     private readonly quotations: QuotationsService,
+    private readonly packagingRepo: PackagingRepository,
+    private readonly quotationsRepo: QuotationsRepository,
   ) {}
 
   /** Catalog -> packing (both strategies) -> Boxes tab -> quotations -> Quotations tab. */
@@ -43,5 +49,16 @@ export class AutomationService {
       invalidItems,
       strategies: [summarize(minBoxesResult), summarize(minBillableResult)],
     };
+  }
+
+  /**
+   * Generates a comparative analysis report from the persisted spreadsheet state.
+   */
+  async getReport(): Promise<AutomationReport> {
+    const [boxes, quotations] = await Promise.all([
+      this.packagingRepo.fetchBoxes(),
+      this.quotationsRepo.fetchQuotations(),
+    ]);
+    return buildAutomationReport(boxes, quotations);
   }
 }
