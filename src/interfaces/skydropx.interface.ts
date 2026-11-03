@@ -63,3 +63,81 @@ export interface PollQuotationOptions {
   timeoutMs?: number;
   intervalMs?: number;
 }
+
+export interface SkydropxShipmentAddressPayload {
+  street1: string;
+  name: string;
+  company?: string;
+  phone: string;
+  email: string;
+  reference: string;
+  country_code?: string;
+  postal_code?: string;
+  area_level1?: string;
+  area_level2?: string;
+  area_level3?: string;
+}
+
+export interface SkydropxShipmentProductPayload {
+  name: string;
+  sku: string;
+  quantity: number;
+  price: number;
+  product_type_code?: string;
+  product_type_name?: string;
+  country_code?: string;
+}
+
+export interface SkydropxShipmentPackagePayload {
+  package_number?: string;
+  package_type: string;
+  consignment_note: string;
+  package_protected?: boolean;
+  declared_value?: number;
+  products?: SkydropxShipmentProductPayload[];
+}
+
+export interface SkydropxCreateShipmentPayload {
+  shipment: {
+    rate_id: string;
+    unique_shipment?: boolean;
+    printing_format?: string;
+    address_from?: SkydropxShipmentAddressPayload;
+    address_to?: SkydropxShipmentAddressPayload;
+    packages?: SkydropxShipmentPackagePayload[];
+  };
+}
+
+export interface SkydropxShipmentPackageAttributes {
+  id?: string;
+  tracking_number?: string | number;
+  label_url?: string | null;
+  tracking_url_provider?: string;
+  tracking_status?: string | null;
+}
+
+export interface SkydropxShipmentIncludedResource {
+  id: string;
+  type: string;
+  attributes?: SkydropxShipmentPackageAttributes;
+}
+
+export interface SkydropxShipmentAttributes {
+  id?: string;
+  carrier_name?: string;
+  workflow_status?: string;
+  payment_status?: string;
+  total?: string | number;
+  master_tracking_number?: string | number;
+  error_detail?: string | null;
+}
+
+export interface SkydropxShipmentResponse {
+  data?: {
+    id: string;
+    type: string;
+    attributes: SkydropxShipmentAttributes;
+  };
+  included?: SkydropxShipmentIncludedResource[];
+}
+

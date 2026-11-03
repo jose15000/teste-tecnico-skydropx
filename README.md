@@ -240,10 +240,29 @@ Per the instructions (*"If anything in this PDF differs from the documentation, 
 
 ## 5. Duplicate Label Prevention & Sandbox Handling (Part 5)
 
-- **Two-Layer Idempotency**:
-  1. Before calling `POST /api/v1/shipments` for any `boxId`, `LabelsService.generateLabels()` checks the `Labels` (`Guías`) tab and the local `/labels` folder (`BOX-XX_<tracking>.pdf`). If a label already exists for that box, it is marked as `skipped_existing` and reused without spending sandbox credits.
-  2. In the request payload to Skydropx, `unique_shipment: true` is enabled so Skydropx caches the shipment per `rate_id` for 96 hours.
-- **Carrier Fallback in Sandbox**: If the primary carrier rate fails to generate a label in the sandbox environment, `LabelsService` automatically attempts fallback rates from the box's valid quotations and logs any carrier-specific sandbox errors.
+### 5.1 Three-Layer Idempotency & Credit Safety
+Creating shipments in Skydropx consumes actual account credits ($1,000 MXN initial limit in Sandbox). To ensure strict credit safety and avoid duplicate spending:
+1. **Google Sheets Layer**: Before making any API request, `LabelsService` reads the `Guías` tab. If a box already has a recorded `Número de guía`, it is immediately skipped.
+2. **Local Filesystem Layer**: Verifies that the physical file `labels/BOX-XX_<tracking>.pdf` exists locally before bypassing re-download.
+3. **Skydropx API Native Deduplication**: In the `POST /api/v1/shipments/` request payload, `"unique_shipment": true` is passed, ensuring Skydropx's internal deduplication cache replays previous responses for identical `rate_id`s.
+
+### 5.2 Dynamic Regulatory Shipment Payload (SAT Carta Porte)
+In compliance with Mexican SAT regulations and Skydropx Pro API requirements:
+- **`package_type`**: Homologated technical packaging code `"4G"` (*Caja de cartón* / UN certified fiberboard box).
+- **`consignment_note`**: Required SAT Carta Porte catalog code `"53102400"` for commercial freight.
+- **Dynamic Box Contents**: Evaluates `containedSkus` for each box, calculates the cumulative `declared_value`, and maps discrete products with their respective SKU, name, quantity, and price.
+
+### 5.3 Sandbox Credit Exhaustion Handling & Real Results
+Per the challenge evaluation instructions (*"If you run out of credits or a carrier fails to generate a label in the sandbox, document what happened and how you handled it"*):
+- **Initial Sandbox Balance**: $1,000.00 MXN.
+- **Order Total Recommended Cost**: $1,669.36 MXN (5-6 boxes at ~$250–$350 MXN each).
+- **Real Outcome**:
+  - The application successfully generated and downloaded **3 real carrier shipping labels** directly from Skydropx carriers (`ampm` and `Paquetexpress`):
+    - `labels/BOX-06_969520150018.pdf` ($250.00 MXN — `ampm`)
+    - `labels/BOX-01_11168683615.pdf` ($317.48 MXN — `Paquetexpress`)
+    - `labels/BOX-02_11168683616.pdf` ($312.37 MXN — `Paquetexpress`)
+  - Total consumed: **$879.85 MXN**.
+  - **Graceful Failure Handling**: When sandbox credits were exhausted for the remaining boxes, the backend isolated the 422/credit error per box without crashing the application, recorded the successes to the `Guías` spreadsheet tab, and the React frontend immediately rendered a detailed warning banner listing which boxes could not be issued due to credit exhaustion. All generated PDF files and tracking numbers remain intact.
 
 ---
 

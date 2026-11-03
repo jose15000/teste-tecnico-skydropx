@@ -4,8 +4,10 @@ import { ThrottledHttp } from '../../../utils/http-throttle.util.js';
 import type {
   PollQuotationOptions,
   SkydropxCreateQuotationPayload,
+  SkydropxCreateShipmentPayload,
   SkydropxOAuthTokenResponse,
   SkydropxQuotationResponse,
+  SkydropxShipmentResponse,
 } from '../../../interfaces/skydropx.interface.js';
 
 @Injectable()
@@ -21,6 +23,33 @@ export class SkydropxClient {
 
   createQuotation(payload: SkydropxCreateQuotationPayload): Promise<SkydropxQuotationResponse> {
     return this.request('/api/v1/quotations', { method: 'POST', body: JSON.stringify(payload) });
+  }
+
+  createShipment(payload: SkydropxCreateShipmentPayload): Promise<SkydropxShipmentResponse> {
+    return this.request('/api/v1/shipments/', { method: 'POST', body: JSON.stringify(payload) });
+  }
+
+  getShipment(id: string): Promise<SkydropxShipmentResponse> {
+    return this.request(`/api/v1/shipments/${id}`);
+  }
+
+  async pollShipmentUntilReady(id: string, opts?: PollQuotationOptions): Promise<SkydropxShipmentResponse> {
+    const { timeoutMs = 30_000, intervalMs = 2_000 } = opts ?? {};
+    const start = Date.now();
+    let last: SkydropxShipmentResponse | null = null;
+    while (Date.now() - start < timeoutMs) {
+      last = await this.getShipment(id);
+      const pkg = last.included?.find((i) => i.attributes?.label_url);
+      if (pkg?.attributes?.label_url) return last;
+      await new Promise((r) => setTimeout(r, Math.min(intervalMs, Math.max(0, timeoutMs - (Date.now() - start)))));
+    }
+    return last ?? {};
+  }
+
+  async downloadPdf(url: string): Promise<Buffer> {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to download label PDF (${res.status}): ${url}`);
+    return Buffer.from(await res.arrayBuffer());
   }
 
   getQuotation(id: string): Promise<SkydropxQuotationResponse> {

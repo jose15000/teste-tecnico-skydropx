@@ -42,3 +42,21 @@ export interface AutomationReport {
   strategies: StrategyAnalysis[];
   recommendation: Recommendation;
 }
+
+export interface GeneratedLabel {
+  boxId: string;
+  carrier: string;
+  service: string;
+  price: number;
+  trackingNumber: string;
+  pdfFilename: string;
+  createdAt: string;
+}
+
+export interface GenerateLabelsResult {
+  generated: GeneratedLabel[];
+  skipped: GeneratedLabel[];
+  errors: { boxId: string; carrier?: string; service?: string; error: string }[];
+  totalCostMxn: number;
+}
+
